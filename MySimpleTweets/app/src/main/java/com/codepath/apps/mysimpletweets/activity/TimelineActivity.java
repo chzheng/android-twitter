@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.adapter.TweetArrayAdapter;
@@ -117,9 +118,23 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
+    private static int REQUEST_CODE = 1;
+
     public void onComposeAction(MenuItem mi) {
         // handle click here
         Intent i = new Intent(this, TweetActivity.class);
-        startActivity(i); // brings up the second activity
+        startActivityForResult(i, REQUEST_CODE); // brings up the second activity
     }
-}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Toast.makeText(this, "returned from tweet", Toast.LENGTH_SHORT).show();
+            populateTimeline(null);
+//            // Extract name value from result extras
+//            String name = data.getExtras().getString("name");
+//            int code = data.getExtras().getInt("code", 0);
+//            // Toast the name to display temporarily on screen
+        }
+    } }
