@@ -1,13 +1,13 @@
-package com.codepath.apps.restclienttemplate;
-
-import org.scribe.builder.api.Api;
-import org.scribe.builder.api.FlickrApi;
+package com.codepath.apps.mysimpletweets;
 
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.scribe.builder.api.Api;
+import org.scribe.builder.api.TwitterApi;
 
 /*
  * 
@@ -21,15 +21,24 @@ import com.loopj.android.http.RequestParams;
  * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
-public class RestClient extends OAuthBaseClient {
-	public static final Class<? extends Api> REST_API_CLASS = FlickrApi.class; // Change this
-	public static final String REST_URL = "http://api.flickr.com/services"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "SOME_KEY";       // Change this
-	public static final String REST_CONSUMER_SECRET = "SOME_SECRET"; // Change this
-	public static final String REST_CALLBACK_URL = "oauth://cprest"; // Change this (here and in manifest)
+public class TwitterRestClient extends OAuthBaseClient {
+	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
+	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
+	public static final String REST_CONSUMER_KEY = "nXIBgRhUUgUC2ofZ7buBerJcj";       // Change this
+	public static final String REST_CONSUMER_SECRET = "pJEpmqh6idqsmPTL3zF0ookGkGCZZ3XFlWF2d1bR2fISGybue1"; // Change this
+	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
-	public RestClient(Context context) {
+	public TwitterRestClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
+	}
+
+	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("since_id", 1);
+		client.get(apiUrl, params, handler);
 	}
 
 	// CHANGE THIS

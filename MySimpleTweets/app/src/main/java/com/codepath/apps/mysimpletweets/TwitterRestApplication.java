@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.mysimpletweets;
 
 import android.content.Context;
 
@@ -11,16 +11,16 @@ import android.content.Context;
  *     // use client to send requests to API
  *
  */
-public class RestApplication extends com.activeandroid.app.Application {
+public class TwitterRestApplication extends com.activeandroid.app.Application {
 	private static Context context;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		RestApplication.context = this;
+		TwitterRestApplication.context = this;
 	}
 
-	public static RestClient getRestClient() {
-		return (RestClient) RestClient.getInstance(RestClient.class, RestApplication.context);
+	public static TwitterRestClient getRestClient() {
+		return (TwitterRestClient) TwitterRestClient.getInstance(TwitterRestClient.class, TwitterRestApplication.context);
 	}
 }
