@@ -68,6 +68,7 @@ public class TimelineActivity extends AppCompatActivity {
 //        });
     }
 
+    // TODO execute this in AsyncTask: http://guides.codepath.com/android/Creating-and-Executing-Async-Tasks
     // Append more data into the adapter
     public void customLoadMoreDataFromApi(int offset) {
         // This method probably sends out a network request and appends new data items to your adapter.
