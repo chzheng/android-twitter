@@ -1,9 +1,12 @@
 package com.codepath.apps.mysimpletweets.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.codepath.apps.mysimpletweets.R;
@@ -85,7 +88,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("DEBUG", response.toString());
                 try {
                     // fill the listview
-                    for (int i=0; i< response.length(); i++) {
+                    for (int i = 0; i < response.length(); i++) {
                         JSONObject tweetJSON = response.getJSONObject(i);
                         Tweet tweet = Tweet.fromJSON(tweetJSON);
                         if (tweet.getId() != TimelineActivity.this.oldestLoadedTweetId) { // skip the record with the old max_id
@@ -107,4 +110,16 @@ public class TimelineActivity extends AppCompatActivity {
         }, oldestLoadedTweetId);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_timeline, menu);
+        return true;
+    }
+
+    public void onComposeAction(MenuItem mi) {
+        // handle click here
+        Intent i = new Intent(this, TweetActivity.class);
+        startActivity(i); // brings up the second activity
+    }
 }
