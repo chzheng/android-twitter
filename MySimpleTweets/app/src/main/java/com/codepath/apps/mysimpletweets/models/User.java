@@ -3,10 +3,15 @@ package com.codepath.apps.mysimpletweets.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by chzheng on 12/10/2015.
  */
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 5177222050535318633L;  // TODO change to use Parcelable
+
     private String name;
     private long id;
     private String screenName;

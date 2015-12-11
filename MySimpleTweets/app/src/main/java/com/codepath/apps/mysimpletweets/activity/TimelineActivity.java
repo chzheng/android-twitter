@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.adapter.TweetArrayAdapter;
@@ -130,11 +129,11 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            Toast.makeText(this, "returned from tweet", Toast.LENGTH_SHORT).show();
-            populateTimeline(null);
-//            // Extract name value from result extras
-//            String name = data.getExtras().getString("name");
-//            int code = data.getExtras().getInt("code", 0);
-//            // Toast the name to display temporarily on screen
+//            Toast.makeText(this, "returned from tweet", Toast.LENGTH_SHORT).show();
+            // extract newly created tweet from result
+            Tweet tweet = (Tweet) data.getSerializableExtra("tweet");
+            // inject it into timeline adapter
+            tweets.add(0, tweet);
+            tweetAdapter.notifyDataSetChanged();
         }
     } }

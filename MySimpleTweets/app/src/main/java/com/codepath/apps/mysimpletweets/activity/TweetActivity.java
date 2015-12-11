@@ -7,9 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.rest.TwitterRestApplication;
 import com.codepath.apps.mysimpletweets.rest.TwitterRestClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -46,7 +46,7 @@ public class TweetActivity extends AppCompatActivity {
         // extract tweet body from UI
         EditText etBody = (EditText) findViewById(R.id.etBody);
         String tweetBody = etBody.getText().toString();
-        Toast.makeText(this, tweetBody, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, tweetBody, Toast.LENGTH_SHORT).show();
 
         // call Twitter API to create tweet
         TwitterRestClient client = TwitterRestApplication.getRestClient();
@@ -54,8 +54,13 @@ public class TweetActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("DEBUG", response.toString());
-                // trigger timeline activity a refresh to show latest tweet
+                // extract newly created tweet
+                Tweet tweet = Tweet.fromJSON(response);
+
+                // pass it back to timeline activity to inject into timeline on client side
+                // because twitter can not absorb it into timeline fast enough for client refresh
                 Intent data = new Intent();
+                data.putExtra("tweet", tweet);
                 // maybe we can pass back the id of just created tweet
                 setResult(RESULT_OK, data);
                 // close this Activity
@@ -68,6 +73,5 @@ public class TweetActivity extends AppCompatActivity {
                 throwable.printStackTrace();
             }
         }, tweetBody);
-
     }
 }
