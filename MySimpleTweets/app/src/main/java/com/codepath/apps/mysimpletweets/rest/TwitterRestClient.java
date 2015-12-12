@@ -53,16 +53,6 @@ public class TwitterRestClient extends OAuthBaseClient {
 		client.post(apiUrl, params, handler);
 	}
 
-	// CHANGE THIS
-	// DEFINE METHODS for different API endpoints here
-	public void getInterestingnessList(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		params.put("format", "json");
-		client.get(apiUrl, params, handler);
-	}
-
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
@@ -71,4 +61,13 @@ public class TwitterRestClient extends OAuthBaseClient {
 	 *    i.e client.get(apiUrl, params, handler);
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
+
+	public void getCurrentUser(AsyncHttpResponseHandler handler) {
+		// https://dev.twitter.com/rest/reference/get/account/verify_credentials
+		// test with https://dev.twitter.com/rest/tools/console
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		client.get(apiUrl, params, handler);
+	}
 }

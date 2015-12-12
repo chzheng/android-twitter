@@ -54,7 +54,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
         // clear recycled image
         ivProfileImage.setImageDrawable(null);
         // download image from internet into imageView
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).transform(new CircleTransform()).into(ivProfileImage);
+//        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).transform(new CircleTransform()).into(ivProfileImage);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
 
         // Return the created item as a view
         return convertView;

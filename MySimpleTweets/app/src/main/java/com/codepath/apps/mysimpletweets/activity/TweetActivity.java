@@ -7,12 +7,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.models.User;
 import com.codepath.apps.mysimpletweets.rest.TwitterRestApplication;
 import com.codepath.apps.mysimpletweets.rest.TwitterRestClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -27,6 +31,9 @@ public class TweetActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // TODO set current user's username & profile image
+        populateCurrentUser();
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -35,6 +42,31 @@ public class TweetActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    private void populateCurrentUser() {
+        TwitterRestClient client = TwitterRestApplication.getRestClient();
+        client.getCurrentUser(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
+                User user = User.fromJSON(response);
+                if (user != null) {
+                    TextView tvUsername = (TextView) findViewById(R.id.tvUsername);
+                    tvUsername.setText(user.getName());
+                    ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+                    ivProfileImage.setImageDrawable(null);
+                    // download image from internet into imageView
+                    Picasso.with(TweetActivity.this.getBaseContext()).load(user.getProfileImageUrl()).into(ivProfileImage);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+                throwable.printStackTrace();
+            }
+        });
     }
 
     public void onClickCancel(View v) {
